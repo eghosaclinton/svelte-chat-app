@@ -9,14 +9,14 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>Svelte+Convex Chat</title>
+	<title>Campfire</title>
 	<meta
 		name="description"
 		content="chat live with anyone, no sign ups. built with svelte and convex"
 	/>
 
 	<!-- OpenGraph -->
-	<meta property="og:title" content="Svelte+Convex Chat" />
+	<meta property="og:title" content="Campfire" />
 	<meta
 		property="og:description"
 		content="chat live with anyone, no sign ups. built with svelte and convex."
@@ -27,7 +27,7 @@
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Svelte+Convex Chat" />
+	<meta name="twitter:title" content="Campfire" />
 	<meta
 		name="twitter:description"
 		content="chat live with anyone, no sign ups. built with svelte and convex"

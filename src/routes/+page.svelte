@@ -20,12 +20,12 @@
 	});
 
 	function getOrSetFakeName() {
-		const NAME_KEY = 'tutorial_name';
-		const name = sessionStorage.getItem(NAME_KEY);
+		const NAME_KEY = 'campfire_name';
+		const name = localStorage.getItem(NAME_KEY);
 
 		if (!name) {
 			const newName = faker.person.firstName();
-			sessionStorage.setItem(NAME_KEY, newName);
+			localStorage.setItem(NAME_KEY, newName);
 			return newName;
 		}
 
@@ -47,7 +47,7 @@
 
 <main class="chat">
 	<header>
-		<h1>Convex Chat</h1>
+		<h1>Campfire</h1>
 		<p>Connected as <strong>{NAME}</strong></p>
 	</header>
 
