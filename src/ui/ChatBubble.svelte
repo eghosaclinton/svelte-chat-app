@@ -1,12 +1,8 @@
 <script lang="ts">
-    let m = $state({x: 0, y: 0})
-
-    function onpointermove(event: PointerEvent){
-        m.x = event.clientX
-        m.y = event.clientY
-    }
+	const { message, NAME } = $props();
 </script>
 
-<div {onpointermove}>
-    Your mouse is at {Math.round(m.x)}
-</div>
+<article class={message.user == NAME ? 'message-mine' : ''}>
+	<div>{message.user}</div>
+	<p>{message.body}</p>
+</article>

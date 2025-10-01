@@ -1,20 +1,18 @@
 <script lang="ts">
 	import ChatBubble from '../ui/ChatBubble.svelte';
-	import { useQuery } from 'convex-svelte';
+	import { useConvexClient, useQuery } from 'convex-svelte';
 	import { api } from '../convex/_generated/api';
+	import { faker } from '@faker-js/faker';
 	import { onMount } from 'svelte';
 
 	let NAME = $state('');
-
-	const messages = $state([{ _id: '1', user: 'Alice', body: 'Good morning!' }]);
-
-	//place mutation hook here
+	const convexClient = useConvexClient();
+	const messages = useQuery(api.chat.getMessage, {});
 
 	let newMessageText = $state('');
 
 	onMount(() => {
 		NAME = getOrSetFakeName();
-		messages.push({ _id: '2', user: NAME, body: 'Beautiful sunrise today' });
 
 		setTimeout(() => {
 			window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -26,7 +24,7 @@
 		const name = sessionStorage.getItem(NAME_KEY);
 
 		if (!name) {
-			const newName = 'Aisosa';
+			const newName = faker.person.firstName();
 			sessionStorage.setItem(NAME_KEY, newName);
 			return newName;
 		}
@@ -34,9 +32,15 @@
 		return name;
 	}
 
-	function onsubmit(event: SubmitEvent) {
+	async function onsubmit(event: SubmitEvent) {
 		event.preventDefault();
-		alert('Mutation has not been implemented');
+        console.log("lol")
+		// alert('Mutation has not been implemented');
+		await convexClient.mutation(api.chat.sendMessage, {
+			user: NAME,
+			body: newMessageText
+		});
+
 		newMessageText = '';
 	}
 </script>
@@ -47,12 +51,15 @@
 		<p>Connected as <strong>{NAME}</strong></p>
 	</header>
 
-	{#each messages as message (message._id)}
-		<article class={message.user == NAME ? 'message-mine' : ''}>
-			<div>{message.user}</div>
-			<p>{message.body}</p>
-		</article>
-	{/each}
+	{#if messages.isLoading}
+		<p>isLoading</p>
+	{:else if messages.error}
+		<p>something is wrong mate, um {messages.error.toString()}</p>
+	{:else}
+		{#each messages.data as message (message._id)}
+			<ChatBubble {message} {NAME} />
+		{/each}
+	{/if}
 
 	<form {onsubmit}>
 		<input type="text" bind:value={newMessageText} placeholder="Write a new message..." />
